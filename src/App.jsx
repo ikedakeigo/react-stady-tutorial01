@@ -4,7 +4,6 @@ import { InputTodo } from "./components/InputTodo";
 import { IncompleteTodos } from "./components/IncompleteTodos";
 import { CompleteTodos } from "./components/CompleteTodos";
 
-
 export const App = () => {
   const [todoText, setTodoText] = useState("");
   const [incompleteTodos, setIncompleteTodos] = useState([]);
@@ -12,13 +11,12 @@ export const App = () => {
 
   const onChangeTodoText = (event) => setTodoText(event.target.value);
 
-
   const onClickAdd = () => {
     if (todoText === "") return;
     const newTodos = [...incompleteTodos, todoText];
     setIncompleteTodos(newTodos);
     setTodoText("");
-  }
+  };
 
   const onClickDelete = (index) => {
     const newTodos = [...incompleteTodos];
@@ -36,7 +34,6 @@ export const App = () => {
     setCompleteTodos(newCompleteTodos);
   };
 
-
   const onClickBack = (index) => {
     const newCompleteTodos = [...completeTodos];
     newCompleteTodos.splice(index, 1);
@@ -46,22 +43,19 @@ export const App = () => {
     setIncompleteTodos(newIncompleteTodos);
   };
 
-
   return (
     <>
-      <InputTodo todoText={todoText} onChange={onChangeTodoText} onClick={onClickAdd} />
-
-      <IncompleteTodos
-      todos={incompleteTodos}
-      onClickComplete={onClickComplete}
-      onClickDelete={onClickDelete}
+      <InputTodo todoText={todoText} onChange={onChangeTodoText} onClick={onClickAdd}
+      disabled={incompleteTodos.length >= 5}
       />
 
-      <CompleteTodos
-      todos={completeTodos}
-      onClickBack={onClickBack}
-      />
+      {incompleteTodos.length >= 5 &&(
+      <p style={{ color: "red" }}>登録できるtodoは5個まで</p>
+      )}
 
+      <IncompleteTodos todos={incompleteTodos} onClickComplete={onClickComplete} onClickDelete={onClickDelete} />
+
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
